@@ -438,6 +438,72 @@ td {
     display: none;
 }
 
+/* Submenu */
+.submenu {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0;
+}
+
+.submenu-item {
+    display: block;
+    padding: 0.5rem 1.5rem 0.5rem 3.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.submenu-item:hover {
+    color: white;
+}
+
+/* Groups Grid */
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.group-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+.group-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.group-icon {
+    width: 40px;
+    height: 40px;
+    background: #eaf2f8;
+    color: var(--sidebar-bg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.group-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.group-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
 /* Modal */
 .modal-overlay {
     position: fixed;

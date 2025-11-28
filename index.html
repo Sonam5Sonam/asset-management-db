@@ -55,7 +55,7 @@
 
             <nav class="nav-links">
                 <div class="nav-category">MAIN</div>
-                <a href="#" class="nav-item active">
+                <a href="#" class="nav-item active" onclick="app.showView('dashboard')">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"></rect>
                         <rect x="14" y="3" width="7" height="7"></rect>
@@ -64,16 +64,29 @@
                     </svg>
                     Dashboard
                 </a>
-                <a href="#" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                        </path>
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                    </svg>
-                    Items
-                </a>
+
+                <!-- Items Dropdown -->
+                <div class="nav-item-group">
+                    <div class="nav-item" onclick="app.toggleSubmenu('items-submenu')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        Items
+                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="width:14px; height:14px; margin-left:auto;">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="submenu hidden" id="items-submenu">
+                        <a href="#" class="submenu-item" onclick="app.showView('asset-stock')">Asset Stock</a>
+                        <a href="#" class="submenu-item" onclick="app.showView('groups')">Groups</a>
+                    </div>
+                </div>
+
                 <a href="#" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -97,68 +110,87 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="top-bar">
-                <h1 class="page-title">Assets</h1>
-                <div class="top-actions">
-                    <div class="search-box">
-                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <input type="text" id="search-input" placeholder="Search by Name, AIN, or Custodian...">
+            <!-- Dashboard View -->
+            <div id="view-dashboard">
+                <header class="top-bar">
+                    <h1 class="page-title">Dashboard</h1>
+                </header>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Assets</span>
+                        <span class="stat-value" id="total-assets">0</span>
                     </div>
-                    <button id="add-asset-btn" class="btn btn-primary">
-                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Asset
-                    </button>
-                </div>
-            </header>
-
-            <!-- Stats Bar -->
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-label">Total Assets</span>
-                    <span class="stat-value" id="total-assets">0</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-label">Assigned</span>
-                    <span class="stat-value" id="assigned-assets">0</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-label">Available</span>
-                    <span class="stat-value" id="available-assets">0</span>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">Assigned</span>
+                        <span class="stat-value" id="assigned-assets">0</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">Available</span>
+                        <span class="stat-value" id="available-assets">0</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Asset Table -->
-            <div class="content-card">
-                <div class="table-tabs">
-                    <button class="tab-btn active">All Assets</button>
-                    <button class="tab-btn">Available</button>
-                    <button class="tab-btn">Checked Out</button>
+            <!-- Asset Stock View -->
+            <div id="view-asset-stock" class="hidden">
+                <header class="top-bar">
+                    <h1 class="page-title" id="asset-stock-title">Asset Stock</h1>
+                    <div class="top-actions">
+                        <div class="search-box">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="search-input" placeholder="Search by Name, AIN, or Custodian...">
+                        </div>
+                        <button id="add-asset-btn" class="btn btn-primary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Asset
+                        </button>
+                    </div>
+                </header>
+
+                <div class="content-card">
+                    <div class="table-tabs">
+                        <button class="tab-btn active" onclick="app.filterAssets('all')">All Assets</button>
+                        <button class="tab-btn" onclick="app.filterAssets('available')">Available</button>
+                        <button class="tab-btn" onclick="app.filterAssets('checked_out')">Checked Out</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>AIN / Serial #</th>
+                                    <th>Group</th>
+                                    <th>Location</th>
+                                    <th>Custodian</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="asset-table-body">
+                                <!-- Rows populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Asset Name</th>
-                                <th>AIN / Serial #</th>
-                                <th>Group</th>
-                                <th>Location</th>
-                                <th>Custodian</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="asset-table-body">
-                            <!-- Rows populated by JS -->
-                        </tbody>
-                    </table>
+            </div>
+
+            <!-- Groups View -->
+            <div id="view-groups" class="hidden">
+                <header class="top-bar">
+                    <h1 class="page-title">Groups</h1>
+                </header>
+                <div class="groups-grid" id="groups-grid">
+                    <!-- Group Cards populated by JS -->
                 </div>
             </div>
         </main>

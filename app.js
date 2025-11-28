@@ -129,6 +129,34 @@ const ui = {
         });
     },
 
+    // Render Groups Grid
+    renderGroups(assets = []) {
+        const grid = document.getElementById('groups-grid');
+        grid.innerHTML = '';
+
+        // Calculate counts per category
+        const groups = {};
+        assets.forEach(a => {
+            const cat = a.category || 'Uncategorized';
+            groups[cat] = (groups[cat] || 0) + 1;
+        });
+
+        Object.keys(groups).forEach(groupName => {
+            const count = groups[groupName];
+            const card = document.createElement('div');
+            card.className = 'group-card';
+            card.onclick = () => app.filterByGroup(groupName);
+            card.innerHTML = `
+                <div class="group-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+                <div class="group-name">${groupName}</div>
+                <div class="group-count">${count} Items</div>
+            `;
+            grid.appendChild(card);
+        });
+    },
+
     // Modal Management
     openModal(modalId) {
         const modal = document.getElementById(modalId);
@@ -142,6 +170,16 @@ const ui = {
         if (modal) {
             modal.classList.remove('open');
         }
+    },
+
+    // View Management
+    showView(viewId) {
+        // Hide all views
+        ['view-dashboard', 'view-asset-stock', 'view-groups'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+        });
+        // Show target view
+        document.getElementById(`view-${viewId}`).classList.remove('hidden');
     },
 
     // Form Helpers
@@ -164,8 +202,9 @@ const ui = {
 // MAIN APP LOGIC
 // ==========================================
 
-// State to track current editing asset
+// State
 let currentEditingId = null;
+let allAssetsCache = [];
 
 const CREDENTIALS = {
     username: 'Asset_Management',
@@ -191,11 +230,46 @@ const app = {
         document.getElementById('login-container').classList.add('hidden');
         document.getElementById('app-container').classList.remove('hidden');
         await this.refresh();
+        // Default view
+        ui.showView('dashboard');
     },
 
     showLogin() {
         document.getElementById('login-container').classList.remove('hidden');
         document.getElementById('app-container').classList.add('hidden');
+    },
+
+    // Navigation Actions
+    showView(viewName) {
+        ui.showView(viewName);
+        if (viewName === 'asset-stock') {
+            // Reset filters when entering asset stock
+            this.filterAssets('all');
+            document.getElementById('asset-stock-title').textContent = 'Asset Stock';
+        }
+    },
+
+    toggleSubmenu(id) {
+        document.getElementById(id).classList.toggle('hidden');
+    },
+
+    filterByGroup(groupName) {
+        this.showView('asset-stock');
+        document.getElementById('asset-stock-title').textContent = `Asset Stock: ${groupName}`;
+        const filtered = allAssetsCache.filter(a => a.category === groupName);
+        ui.renderAssetTable(filtered);
+    },
+
+    filterAssets(type) {
+        // Update active tab
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        let filtered = allAssetsCache;
+        if (type === 'available') filtered = allAssetsCache.filter(a => a.status === 'available');
+        if (type === 'checked_out') filtered = allAssetsCache.filter(a => a.status === 'assigned');
+
+        ui.renderAssetTable(filtered);
     },
 
     setupEventListeners() {
@@ -281,10 +355,9 @@ const app = {
         // Search Filter
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
-            searchInput.addEventListener('input', async (e) => {
+            searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
-                const allAssets = await store.getAssets();
-                const assets = allAssets.filter(a =>
+                const assets = allAssetsCache.filter(a =>
                     a.name.toLowerCase().includes(term) ||
                     (a.serial_number || a.serialNumber || '').toLowerCase().includes(term) ||
                     (a.assigned_to || a.assignedTo || '').toLowerCase().includes(term) ||
@@ -296,9 +369,10 @@ const app = {
     },
 
     async refresh() {
-        const assets = await store.getAssets();
-        ui.renderDashboard(assets);
-        ui.renderAssetTable(assets);
+        allAssetsCache = await store.getAssets();
+        ui.renderDashboard(allAssetsCache);
+        ui.renderAssetTable(allAssetsCache);
+        ui.renderGroups(allAssetsCache);
     },
 
     // Global Actions (exposed to window)
