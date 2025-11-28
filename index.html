@@ -135,45 +135,112 @@
 
             <!-- Asset Stock View -->
             <div id="view-asset-stock" class="hidden">
-                <header class="top-bar">
-                    <h1 class="page-title" id="asset-stock-title">Asset Stock</h1>
+                <header class="top-bar" style="margin-bottom: 1rem;">
+                    <h1 class="page-title">Items</h1>
                     <div class="top-actions">
-                        <div class="search-box">
-                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <button class="btn btn-outline">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
-                            <input type="text" id="search-input" placeholder="Search by Name, AIN, or Custodian...">
-                        </div>
+                            Import Asset Stock
+                        </button>
                         <button id="add-asset-btn" class="btn btn-primary">
                             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
-                            Add Asset
+                            Create Asset Stock
                         </button>
                     </div>
                 </header>
 
-                <div class="content-card">
-                    <div class="table-tabs">
-                        <button class="tab-btn active" onclick="app.filterAssets('all')">All Assets</button>
-                        <button class="tab-btn" onclick="app.filterAssets('available')">Available</button>
-                        <button class="tab-btn" onclick="app.filterAssets('checked_out')">Checked Out</button>
+                <!-- Tabs -->
+                <div class="view-tabs" style="border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <button class="tab-btn" style="padding: 1rem 1.5rem; color: var(--text-muted);">Assets</button>
+                    <button class="tab-btn active"
+                        style="padding: 1rem 1.5rem; border-bottom: 2px solid var(--primary-color); color: var(--primary-color);">Asset
+                        Stock</button>
+                    <button class="tab-btn" style="padding: 1rem 1.5rem; color: var(--text-muted);">Inventory</button>
+                </div>
+
+                <!-- Info Banner -->
+                <div class="info-banner"
+                    style="background: #e8f4fd; border: 1px solid #bce0fd; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: start;">
+                    <svg style="width: 20px; height: 20px; color: #3498db; flex-shrink: 0; margin-top: 2px;"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <div>
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem;">Asset Stock</div>
+                        <div style="font-size: 0.875rem; color: #576574;">Asset Stock represents bulk items managed in
+                            quantities rather than individually, such as cables, chairs, or other frequently used
+                            supplies.</div>
                     </div>
+                    <button
+                        style="margin-left: auto; background: none; border: none; color: #3498db; cursor: pointer;">&times;</button>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="search-box" style="flex: 1;">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search Asset Stock" style="width: 100%;">
+                    </div>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                        Filters
+                    </button>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                        State <svg style="width: 14px; height: 14px; margin-left: 0.5rem;" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                        Location Stock View <svg style="width: 14px; height: 14px; margin-left: 0.5rem;"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="content-card">
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Asset Name</th>
-                                    <th>AIN / Serial #</th>
-                                    <th>Group</th>
-                                    <th>Location</th>
-                                    <th>Custodian</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th style="width: 40px;"><input type="checkbox"></th>
+                                    <th>Asset Stock # <svg style="width: 12px; height: 12px; display: inline-block;"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="m7 15 5 5 5-5" />
+                                            <path d="m7 9 5-5 5 5" />
+                                        </svg></th>
+                                    <th>Name <svg style="width: 12px; height: 12px; display: inline-block;"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="m7 15 5 5 5-5" />
+                                            <path d="m7 9 5-5 5 5" />
+                                        </svg></th>
+                                    <th>Stock Location <svg style="width: 12px; height: 12px; display: inline-block;"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="m7 15 5 5 5-5" />
+                                            <path d="m7 9 5-5 5 5" />
+                                        </svg></th>
+                                    <th>Stock Quantity <svg style="width: 12px; height: 12px; display: inline-block;"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="m7 15 5 5 5-5" />
+                                            <path d="m7 9 5-5 5 5" />
+                                        </svg></th>
                                 </tr>
                             </thead>
                             <tbody id="asset-table-body">
