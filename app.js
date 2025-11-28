@@ -214,6 +214,19 @@ const ui = {
             // Fallback if view doesn't exist
             document.getElementById('view-dashboard').classList.remove('hidden');
         }
+
+        // Update Sidebar Active State
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+        if (viewId === 'dashboard') {
+            document.getElementById('nav-dashboard').classList.add('active');
+        } else if (viewId === 'asset-stock' || viewId === 'groups') {
+            document.getElementById('nav-items').classList.add('active');
+            // Ensure submenu is open
+            document.getElementById('submenu-items').classList.remove('hidden');
+        } else if (viewId === 'locations') {
+            document.getElementById('nav-locations').classList.add('active');
+        }
     },
 
     // Form Helpers

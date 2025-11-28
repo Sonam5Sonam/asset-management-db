@@ -55,7 +55,7 @@
 
             <nav class="nav-links">
                 <div class="nav-category">MAIN</div>
-                <a href="#" class="nav-item active" onclick="app.showView('dashboard')">
+                <a href="#" id="nav-dashboard" class="nav-item active" onclick="app.showView('dashboard')">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"></rect>
                         <rect x="14" y="3" width="7" height="7"></rect>
@@ -67,7 +67,7 @@
 
                 <!-- Items Dropdown -->
                 <div class="nav-item-group">
-                    <li class="nav-item" onclick="app.toggleSubmenu('submenu-items')">
+                    <li id="nav-items" class="nav-item" onclick="app.toggleSubmenu('submenu-items')">
                         <div class="nav-link">
                             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
@@ -86,7 +86,7 @@
                         <a href="#" class="submenu-item" onclick="app.showView('groups')">Groups</a>
                     </div>
 
-                    <li class="nav-item" onclick="app.showView('locations')">
+                    <li id="nav-locations" class="nav-item" onclick="app.showView('locations')">
                         <div class="nav-link">
                             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
