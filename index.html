@@ -15,18 +15,11 @@
     <!-- Login Container -->
     <div id="login-container" class="login-container">
         <div class="login-box">
-            <div class="logo" style="justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
-                    <path d="M13 5v2" />
-                    <path d="M13 17v2" />
-                    <path d="M13 11v2" />
-                </svg>
+            <div class="logo-large">
+                <div class="logo-icon-large">AM</div>
                 AssetManager
             </div>
-            <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.25rem;">Sign In</h2>
+            <h2 class="login-title">Sign In</h2>
             <form id="login-form">
                 <div class="form-group">
                     <label class="form-label">Username</label>
@@ -36,12 +29,10 @@
                     <label class="form-label">Password</label>
                     <input type="password" id="password" class="form-input" required placeholder="Enter password">
                 </div>
-                <div id="login-error"
-                    style="color: var(--danger-color); font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: none;">
+                <div id="login-error" class="error-msg">
                     Invalid credentials
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Sign
-                    In</button>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </form>
         </div>
     </div>
@@ -49,109 +40,126 @@
     <div class="app-container hidden" id="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
-                    <path d="M13 5v2" />
-                    <path d="M13 17v2" />
-                    <path d="M13 11v2" />
-                </svg>
-                AssetManager
+            <div class="sidebar-header">
+                <div class="logo-icon">AM</div>
+                <span class="logo-text">AssetManager</span>
             </div>
+
+            <div class="user-profile">
+                <div class="avatar">QS</div>
+                <div class="user-info">
+                    <div class="user-name">qs@poddarinfra.com</div>
+                    <div class="user-role">Admin</div>
+                </div>
+            </div>
+
             <nav class="nav-links">
-                <div class="nav-item active">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="7" height="9" x="3" y="3" rx="1" />
-                        <rect width="7" height="5" x="14" y="3" rx="1" />
-                        <rect width="7" height="9" x="14" y="12" rx="1" />
-                        <rect width="7" height="5" x="3" y="16" rx="1" />
+                <div class="nav-category">MAIN</div>
+                <a href="#" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
                     </svg>
                     Dashboard
-                </div>
-                <div class="nav-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" x2="8" y1="13" y2="13" />
-                        <line x1="16" x2="8" y1="17" y2="17" />
-                        <polyline points="10 9 9 9 8 9" />
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    Items
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <polyline points="17 11 19 13 23 9"></polyline>
+                    </svg>
+                    Custodians
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
                     </svg>
                     Reports
-                </div>
-                <div class="nav-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    Members
-                </div>
+                </a>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="header">
-                <h1 class="page-title">Dashboard</h1>
-                <button id="add-asset-btn" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Add Asset
-                </button>
+            <header class="top-bar">
+                <h1 class="page-title">Assets</h1>
+                <div class="top-actions">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search by Name, AIN, or Custodian...">
+                    </div>
+                    <button id="add-asset-btn" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Asset
+                    </button>
+                </div>
             </header>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Assets</div>
-                    <div class="stat-value" id="total-assets">0</div>
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">Total Assets</span>
+                    <span class="stat-value" id="total-assets">0</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Assigned</div>
-                    <div class="stat-value" id="assigned-assets">0</div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Assigned</span>
+                    <span class="stat-value" id="assigned-assets">0</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Available</div>
-                    <div class="stat-value" id="available-assets">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">In Maintenance</div>
-                    <div class="stat-value" id="maintenance-assets">0</div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Available</span>
+                    <span class="stat-value" id="available-assets">0</span>
                 </div>
             </div>
 
-            <!-- Asset List -->
-            <div class="table-container">
-                <div
-                    style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                    <h2 style="font-size: 1rem; font-weight: 600;">All Assets</h2>
-                    <input type="text" id="search-input" placeholder="Search assets..." class="form-input"
-                        style="width: 250px;">
+            <!-- Asset Table -->
+            <div class="content-card">
+                <div class="table-tabs">
+                    <button class="tab-btn active">All Assets</button>
+                    <button class="tab-btn">Available</button>
+                    <button class="tab-btn">Checked Out</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Serial Number</th>
-                            <th>Status</th>
-                            <th>Assigned To</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="asset-table-body">
-                        <!-- Rows will be populated by JS -->
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Asset Name</th>
+                                <th>AIN / Serial #</th>
+                                <th>Group</th>
+                                <th>Location</th>
+                                <th>Custodian</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="asset-table-body">
+                            <!-- Rows populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
@@ -165,31 +173,42 @@
             </div>
             <form id="asset-form">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label class="form-label">Asset Name</label>
-                        <input type="text" name="name" class="form-input" required placeholder="e.g. MacBook Pro">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Asset Name</label>
+                            <input type="text" name="name" class="form-input" required
+                                placeholder="e.g. MacBook Pro M1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Group</label>
+                            <select name="category" class="form-select" required>
+                                <option value="IT Assets">IT Assets</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Machinery">Machinery</option>
+                                <option value="Vehicles">Vehicles</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select name="category" class="form-select" required>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Monitor">Monitor</option>
-                            <option value="Phone">Phone</option>
-                            <option value="Peripherals">Peripherals</option>
-                            <option value="Furniture">Furniture</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Identification Number (AIN)</label>
+                            <input type="text" name="serialNumber" class="form-input" required
+                                placeholder="e.g. 100245">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" name="location" class="form-input" placeholder="e.g. Head Office">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Serial Number</label>
-                        <input type="text" name="serialNumber" class="form-input" required placeholder="e.g. SN-12345">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Purchase Price ($)</label>
-                        <input type="number" name="price" class="form-input" required min="0" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Purchase Date</label>
-                        <input type="date" name="purchaseDate" class="form-input" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Purchase Price ($)</label>
+                            <input type="number" name="price" class="form-input" required min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Purchase Date</label>
+                            <input type="date" name="purchaseDate" class="form-input" required>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -211,13 +230,14 @@
                 <input type="hidden" id="checkout-asset-id">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="form-label">Assign To (Employee Name)</label>
-                        <input type="text" id="assign-to" class="form-input" required placeholder="e.g. John Doe">
+                        <label class="form-label">Select Custodian</label>
+                        <input type="text" id="assign-to" class="form-input" required
+                            placeholder="Search for employee...">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline close-btn">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm Assignment</button>
+                    <button type="submit" class="btn btn-primary">Check Out</button>
                 </div>
             </form>
         </div>

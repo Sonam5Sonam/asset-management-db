@@ -78,40 +78,51 @@ const ui = {
         tbody.innerHTML = '';
 
         if (assets.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No assets found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 2rem;">No assets found.</td></tr>';
             return;
         }
 
         assets.forEach(asset => {
-            // Map DB columns (snake_case) to UI (camelCase) if needed, or adjust DB query
-            // For simplicity, assuming DB returns matching keys or we handle it here
-            // DB: serial_number, assigned_to. JS: serialNumber, assignedTo
-
             const displayAsset = {
                 ...asset,
                 serialNumber: asset.serial_number || asset.serialNumber,
-                assignedTo: asset.assigned_to || asset.assignedTo
+                assignedTo: asset.assigned_to || asset.assignedTo,
+                location: asset.location || '-'
             };
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${displayAsset.name}</td>
-                <td>${displayAsset.category}</td>
+                <td>
+                    <div style="font-weight: 500;">${displayAsset.name}</div>
+                </td>
                 <td>${displayAsset.serialNumber}</td>
+                <td>${displayAsset.category}</td>
+                <td>${displayAsset.location}</td>
+                <td>
+                    ${displayAsset.assignedTo ?
+                    `<div style="display:flex; align-items:center; gap:0.5rem;">
+                            <div style="width:24px; height:24px; background:#eaf2f8; color:#3498db; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700;">
+                                ${displayAsset.assignedTo.charAt(0)}
+                            </div>
+                            ${displayAsset.assignedTo}
+                        </div>`
+                    : '<span style="color:var(--text-muted);">-</span>'}
+                </td>
                 <td>
                     <span class="status-badge status-${displayAsset.status}">
                         ${displayAsset.status.charAt(0).toUpperCase() + displayAsset.status.slice(1)}
                     </span>
                 </td>
-                <td>${displayAsset.assignedTo || '-'}</td>
                 <td>
-                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="window.app.editAsset(${displayAsset.id})">Edit</button>
-                    ${displayAsset.status === 'available'
-                    ? `<button class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="window.app.checkOut(${displayAsset.id})">Check Out</button>`
+                    <div style="display:flex; gap:0.5rem;">
+                        <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;" onclick="window.app.editAsset(${displayAsset.id})">Edit</button>
+                        ${displayAsset.status === 'available'
+                    ? `<button class="btn btn-primary" style="padding: 0.25rem 0.5rem;" onclick="window.app.checkOut(${displayAsset.id})">Check Out</button>`
                     : displayAsset.status === 'assigned'
-                        ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="window.app.checkIn(${displayAsset.id})">Check In</button>`
+                        ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem;" onclick="window.app.checkIn(${displayAsset.id})">Check In</button>`
                         : ''
                 }
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -237,7 +248,8 @@ const app = {
                     category: formData.get('category'),
                     serialNumber: formData.get('serialNumber'),
                     price: parseFloat(formData.get('price')),
-                    purchaseDate: formData.get('purchaseDate')
+                    purchaseDate: formData.get('purchaseDate'),
+                    location: formData.get('location')
                 };
 
                 if (currentEditingId) {
@@ -271,12 +283,12 @@ const app = {
         if (searchInput) {
             searchInput.addEventListener('input', async (e) => {
                 const term = e.target.value.toLowerCase();
-                // Ideally search should be server-side, but filtering client-side for now
                 const allAssets = await store.getAssets();
                 const assets = allAssets.filter(a =>
                     a.name.toLowerCase().includes(term) ||
                     (a.serial_number || a.serialNumber || '').toLowerCase().includes(term) ||
-                    (a.assigned_to || a.assignedTo || '').toLowerCase().includes(term)
+                    (a.assigned_to || a.assignedTo || '').toLowerCase().includes(term) ||
+                    (a.location || '').toLowerCase().includes(term)
                 );
                 ui.renderAssetTable(assets);
             });
@@ -301,7 +313,8 @@ const app = {
                 category: asset.category,
                 serialNumber: asset.serial_number || asset.serialNumber,
                 price: asset.price,
-                purchaseDate: asset.purchase_date ? asset.purchase_date.split('T')[0] : asset.purchaseDate
+                purchaseDate: asset.purchase_date ? asset.purchase_date.split('T')[0] : asset.purchaseDate,
+                location: asset.location || ''
             };
             ui.fillForm('asset-form', formData);
             document.getElementById('modal-title').textContent = 'Edit Asset';
