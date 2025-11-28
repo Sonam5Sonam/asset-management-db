@@ -108,6 +108,42 @@ const ui = {
         });
     },
 
+    // Render Locations Table
+    renderLocations(assets = []) {
+        const tbody = document.getElementById('locations-table-body');
+        tbody.innerHTML = '';
+
+        // Extract unique locations
+        const uniqueLocations = [...new Set(assets.map(a => a.location).filter(l => l && l !== '-' && l !== 'Unassigned'))];
+
+        if (uniqueLocations.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 2rem;">No locations found.</td></tr>';
+            return;
+        }
+
+        uniqueLocations.forEach((loc, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td>
+                    <a href="#" style="color:#3498db; text-decoration:none;">${index + 1}</a>
+                </td>
+                <td>
+                    <a href="#" style="color:#3498db; font-weight:500; text-decoration:none;">${loc}</a>
+                </td>
+                <td>
+                    <div style="font-size: 0.85rem; color: #555;">
+                        PODDAR INFRATECH PRIVATE LIMITED<br>
+                        ${loc}, Arunachal Pradesh, 790001<br>
+                        GSTIN 12AAFCPO437L1ZL
+                    </div>
+                </td>
+                <td>${loc}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    },
+
     // Render Groups Table
     renderGroups(assets = []) {
         const tbody = document.getElementById('groups-table-body');
@@ -167,7 +203,7 @@ const ui = {
         localStorage.setItem('currentView', viewId);
 
         // Hide all views
-        ['view-dashboard', 'view-asset-stock', 'view-groups'].forEach(id => {
+        ['view-dashboard', 'view-asset-stock', 'view-groups', 'view-locations'].forEach(id => {
             document.getElementById(id).classList.add('hidden');
         });
         // Show target view
@@ -373,6 +409,7 @@ const app = {
         ui.renderDashboard(allAssetsCache);
         ui.renderAssetTable(allAssetsCache);
         ui.renderGroups(allAssetsCache);
+        ui.renderLocations(allAssetsCache);
     },
 
     // Global Actions (exposed to window)
