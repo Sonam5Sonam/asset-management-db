@@ -415,6 +415,12 @@ const app = {
                 ui.renderAssetTable(assets);
             });
         }
+
+        // Import File Handler
+        const importFile = document.getElementById('import-file');
+        if (importFile) {
+            importFile.addEventListener('change', (e) => this.handleImport(e));
+        }
     },
 
     async refresh() {
@@ -426,6 +432,76 @@ const app = {
     },
 
     // Global Actions (exposed to window)
+    async handleImport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const text = e.target.result;
+            const rows = text.split('\n').map(row => row.split(','));
+            const headers = rows[0].map(h => h.trim().replace(/"/g, ''));
+
+            let successCount = 0;
+            const isGroupImport = headers.includes('Group name');
+
+            alert('Starting import... please wait.');
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.length < 2) continue;
+
+                const data = {};
+                headers.forEach((header, index) => {
+                    data[header] = row[index] ? row[index].trim().replace(/"/g, '') : '';
+                });
+
+                // Map CSV fields to Asset fields
+                let asset = {};
+
+                if (isGroupImport) {
+                    // Mapping for groups.csv
+                    if (!data['Group name']) continue;
+                    asset = {
+                        name: data['Group name'],
+                        category: data['Group name'], // Use group name as category
+                        description: data['Description'],
+                        quantity: parseInt(data['Asset stock quantity']) || 0,
+                        type: 'stock',
+                        location: 'Unassigned'
+                    };
+                } else {
+                    // Mapping for Asset_Stock.csv
+                    if (!data['Name']) continue;
+                    asset = {
+                        name: data['Name'],
+                        serialNumber: data['Asset stock #'],
+                        description: data['Description'],
+                        quantity: parseInt(data['Total quantity']) || 0,
+                        price: parseFloat(data['Cost price']) || 0,
+                        location: 'Unassigned',
+                        type: 'stock',
+                        category: 'General'
+                    };
+                }
+
+                if (asset.quantity > 0) {
+                    try {
+                        await store.addAsset(asset);
+                        successCount++;
+                    } catch (err) {
+                        console.error('Import error:', err);
+                    }
+                }
+            }
+
+            alert(`Import Complete! Imported ${successCount} items.`);
+            event.target.value = ''; // Reset input
+            await this.refresh();
+        };
+        reader.readAsText(file);
+    },
+
     async editAsset(id) {
         const assets = await store.getAssets();
         const asset = assets.find(a => a.id === id);
