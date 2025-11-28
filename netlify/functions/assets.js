@@ -21,15 +21,18 @@ exports.handler = async (event, context) => {
         assigned_to TEXT,
         purchase_date DATE,
         price NUMERIC,
-        location TEXT
+        location TEXT,
+        quantity INTEGER DEFAULT 1,
+        type TEXT DEFAULT 'asset'
       );
     `);
 
-        // Migration: Ensure location column exists for existing tables
+        // Migration: Ensure new columns exist
         try {
             await client.query('ALTER TABLE assets ADD COLUMN IF NOT EXISTS location TEXT');
+            await client.query('ALTER TABLE assets ADD COLUMN IF NOT EXISTS quantity INTEGER DEFAULT 1');
+            await client.query("ALTER TABLE assets ADD COLUMN IF NOT EXISTS type TEXT DEFAULT 'asset'");
         } catch (e) {
-            // Ignore if column already exists or other non-critical error
             console.log('Migration note:', e.message);
         }
 
@@ -46,13 +49,22 @@ exports.handler = async (event, context) => {
 
         if (method === 'POST') {
             // ADD ASSET
-            const { name, category, serialNumber, price, purchaseDate, location } = body;
+            const { name, category, serialNumber, price, purchaseDate, location, quantity, type } = body;
             const query = `
-        INSERT INTO assets (name, category, serial_number, status, assigned_to, price, purchase_date, location)
-        VALUES ($1, $2, $3, 'available', '', $4, $5, $6)
+        INSERT INTO assets (name, category, serial_number, status, assigned_to, price, purchase_date, location, quantity, type)
+        VALUES ($1, $2, $3, 'available', '', $4, $5, $6, $7, $8)
         RETURNING *
       `;
-            const values = [name, category, serialNumber, price, purchaseDate, location];
+            const values = [
+                name,
+                category,
+                serialNumber,
+                price,
+                purchaseDate,
+                location,
+                quantity || 1,
+                type || 'asset'
+            ];
             const res = await client.query(query, values);
             return {
                 statusCode: 200,
@@ -62,9 +74,8 @@ exports.handler = async (event, context) => {
 
         if (method === 'PUT') {
             // UPDATE ASSET (Check-in/Check-out/Edit)
-            const { id, status, assignedTo, name, price, location } = body;
+            const { id, status, assignedTo, name, price, location, quantity } = body;
 
-            // Dynamic update query builder could be better, but keeping it simple
             let query, values;
 
             if (status && assignedTo !== undefined) {
@@ -73,10 +84,9 @@ exports.handler = async (event, context) => {
                 values = [status, assignedTo, id];
             } else {
                 // Edit details
-                query = 'UPDATE assets SET name = $1, price = $2, location = $3 WHERE id = $4 RETURNING *';
-                values = [name, price, location, id];
+                query = 'UPDATE assets SET name = $1, price = $2, location = $3, quantity = $4 WHERE id = $5 RETURNING *';
+                values = [name, price, location, quantity, id];
             }
-
             const res = await client.query(query, values);
             return {
                 statusCode: 200,

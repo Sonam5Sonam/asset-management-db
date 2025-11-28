@@ -87,7 +87,7 @@ const ui = {
                 ...asset,
                 serialNumber: asset.serial_number || asset.serialNumber || asset.id, // Fallback to ID if no serial
                 location: asset.location || '-',
-                quantity: 1 // Default to 1 for now
+                quantity: asset.quantity || 1
             };
 
             const tr = document.createElement('tr');
