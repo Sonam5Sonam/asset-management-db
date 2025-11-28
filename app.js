@@ -163,12 +163,21 @@ const ui = {
 
     // View Management
     showView(viewId) {
+        // Save state
+        localStorage.setItem('currentView', viewId);
+
         // Hide all views
         ['view-dashboard', 'view-asset-stock', 'view-groups'].forEach(id => {
             document.getElementById(id).classList.add('hidden');
         });
         // Show target view
-        document.getElementById(`view-${viewId}`).classList.remove('hidden');
+        const target = document.getElementById(`view-${viewId}`);
+        if (target) {
+            target.classList.remove('hidden');
+        } else {
+            // Fallback if view doesn't exist
+            document.getElementById('view-dashboard').classList.remove('hidden');
+        }
     },
 
     // Form Helpers
@@ -219,8 +228,10 @@ const app = {
         document.getElementById('login-container').classList.add('hidden');
         document.getElementById('app-container').classList.remove('hidden');
         await this.refresh();
-        // Default view
-        ui.showView('dashboard');
+
+        // Restore last view or default to dashboard
+        const lastView = localStorage.getItem('currentView') || 'dashboard';
+        ui.showView(lastView);
     },
 
     showLogin() {
