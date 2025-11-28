@@ -138,7 +138,8 @@
                 <header class="top-bar" style="margin-bottom: 1rem;">
                     <h1 class="page-title">Items</h1>
                     <div class="top-actions">
-                        <button class="btn btn-outline">
+                        <input type="file" id="import-file" accept=".csv" style="display: none;">
+                        <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">
                             <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
