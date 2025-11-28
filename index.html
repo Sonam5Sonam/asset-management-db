@@ -188,9 +188,36 @@
             <div id="view-groups" class="hidden">
                 <header class="top-bar">
                     <h1 class="page-title">Groups</h1>
+                    <div class="top-actions">
+                        <button class="btn btn-primary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Group
+                        </button>
+                    </div>
                 </header>
-                <div class="groups-grid" id="groups-grid">
-                    <!-- Group Cards populated by JS -->
+
+                <div class="content-card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Description</th>
+                                    <th>Assets</th>
+                                    <th>Available Assets</th>
+                                    <th>Asset Stock Quantity</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                            <tbody id="groups-table-body">
+                                <!-- Rows populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

@@ -129,31 +129,41 @@ const ui = {
         });
     },
 
-    // Render Groups Grid
+    // Render Groups Table
     renderGroups(assets = []) {
-        const grid = document.getElementById('groups-grid');
-        grid.innerHTML = '';
+        const tbody = document.getElementById('groups-table-body');
+        tbody.innerHTML = '';
 
-        // Calculate counts per category
+        // Calculate stats per category
         const groups = {};
         assets.forEach(a => {
             const cat = a.category || 'Uncategorized';
-            groups[cat] = (groups[cat] || 0) + 1;
+            if (!groups[cat]) {
+                groups[cat] = { total: 0, available: 0, stock: 0 };
+            }
+            groups[cat].total++;
+            groups[cat].stock++; // Assuming 1 asset = 1 stock quantity for now
+            if (a.status === 'available') {
+                groups[cat].available++;
+            }
         });
 
         Object.keys(groups).forEach(groupName => {
-            const count = groups[groupName];
-            const card = document.createElement('div');
-            card.className = 'group-card';
-            card.onclick = () => app.filterByGroup(groupName);
-            card.innerHTML = `
-                <div class="group-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-                </div>
-                <div class="group-name">${groupName}</div>
-                <div class="group-count">${count} Items</div>
+            const stats = groups[groupName];
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a href="#" style="color:#3498db; font-weight:600; text-decoration:none;" onclick="app.filterByGroup('${groupName}')">
+                        ${groupName}
+                    </a>
+                </td>
+                <td>-</td>
+                <td>${stats.total}</td>
+                <td>${stats.available}</td>
+                <td>${stats.stock}</td>
+                <td>-</td>
             `;
-            grid.appendChild(card);
+            tbody.appendChild(tr);
         });
     },
 
