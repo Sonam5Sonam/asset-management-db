@@ -129,8 +129,8 @@ const ui = {
                     <a href="#" style="color:#3498db; text-decoration:none;">${index + 1}</a>
                 </td>
                 <td>
-                    <a href="#" style="color:#3498db; font-weight:500; text-decoration:none;">${loc}</a>
-                </td>
+                <a href="#" style="color:#3498db; font-weight:500; text-decoration:none;" onclick="app.filterByLocation('${loc}')">${loc}</a>
+            </td>
                 <td>
                     <div style="font-size: 0.85rem; color: #555;">
                         PODDAR INFRATECH PRIVATE LIMITED<br>
@@ -306,6 +306,22 @@ const app = {
         this.showView('asset-stock');
         document.getElementById('asset-stock-title').textContent = `Asset Stock: ${groupName}`;
         const filtered = allAssetsCache.filter(a => a.category === groupName);
+        ui.renderAssetTable(filtered);
+    },
+
+    filterByLocation(locationName) {
+        this.showView('asset-stock');
+        // Update title to show location context
+        const titleEl = document.getElementById('asset-stock-title');
+        if (titleEl) {
+            titleEl.textContent = `Assets in ${locationName}`;
+        } else {
+            // Fallback if title element doesn't exist (it might be static in HTML)
+            // We might need to add an ID to the header in index.html if it's not there
+            // For now, let's assume we can set it or just filter
+        }
+
+        const filtered = allAssetsCache.filter(a => a.location === locationName);
         ui.renderAssetTable(filtered);
     },
 
